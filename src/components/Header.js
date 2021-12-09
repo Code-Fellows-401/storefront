@@ -1,11 +1,35 @@
-'use strict';
+import * as React from 'react';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+// import MenuIcon from '@mui/icons-material/Menu';
+import Headermenu from './menu/Menu';
 
-function Header() {
+function Header(props) {
 	return (
-		<>
-			<h1>StoreFront</h1>
-		</>
+		<Box sx={{ flexGrow: 1 }}>
+			<AppBar position='static'>
+				<Toolbar>
+					<IconButton
+						size='large'
+						edge='start'
+						color='inherit'
+						aria-label='menu'
+						sx={{ mr: 2 }}
+					>
+						<Headermenu props={props} />
+					</IconButton>
+					<Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
+						StoreFront
+					</Typography>
+					<Button color='inherit'>Login</Button>
+				</Toolbar>
+			</AppBar>
+		</Box>
 	);
 }
 
-module.exports = Header;
+export default Header;

@@ -1,9 +1,9 @@
-'use strict';
-
 import { React } from 'react';
+import Box from '@mui/material/Box';
+// import Products from './Category/Products';
 
 function Main() {
-	return <></>;
+	return <Box>{/* <Products /> */}</Box>;
 }
 
-module.exports = Main;
+export default Main;

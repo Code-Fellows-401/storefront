@@ -1,5 +1,6 @@
-'use strict';
+import React from 'react';
 
+const CategoryContext = React.createContext();
 let initialState = {
 	category: ['All', 'VideoGame', 'Books', 'Wine'],
 	onLoad: null,
@@ -22,4 +23,12 @@ function categoryReducer(state = initialState, action) {
 	}
 }
 
-module.exports = categoryReducer;
+function CategoryProvider({ children }) {
+	return (
+		<CategoryContext.Provider value={initialState}>
+			{children}
+		</CategoryContext.Provider>
+	);
+}
+
+export { categoryReducer, CategoryProvider, CategoryContext };

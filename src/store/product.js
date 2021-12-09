@@ -1,5 +1,3 @@
-'use strict';
-
 let initialState = {
 	products: [
 		{
@@ -49,5 +47,4 @@ function productReducer(state = initialState, action) {
 			return state;
 	}
 }
-
-module.exports = productReducer;
+export default productReducer;
