@@ -2,9 +2,10 @@ import * as React from 'react';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import MenuIcon from '@mui/icons-material/Menu';
 import { connect } from 'react-redux';
 
-function CartMenu(props) {
+function Headermenu(props) {
 	const [anchorEl, setAnchorEl] = React.useState(null);
 	const open = Boolean(anchorEl);
 	const handleClick = (event) => {
@@ -22,7 +23,7 @@ function CartMenu(props) {
 				onClick={handleClick}
 				color='inherit'
 			>
-				Cart({props.cartState.itemCount})
+				<MenuIcon />
 			</Button>
 
 			<Menu
@@ -33,30 +34,34 @@ function CartMenu(props) {
 					'aria-labelledby': 'basic-button',
 				}}
 			>
-				<MenuItem
-					onClick={() => {
-						setAnchorEl(null);
-					}}
-				>
-					View Cart
-				</MenuItem>
-				<MenuItem
-					onClick={() => {
-						setAnchorEl(null);
-					}}
-				>
-					Checkout
-				</MenuItem>
+				{props.categorySelect.map((item, key) => (
+					<MenuItem
+						key={key}
+						name={item.displayName}
+						onClick={() => {
+							props.changeCategory(item.displayName);
+							setAnchorEl(null);
+						}}
+					>
+						{item.displayName}
+					</MenuItem>
+				))}
 			</Menu>
 		</div>
 	);
 }
 
 const mapStateToProps = (state) => {
-	console.log(state.cart);
+	console.log(state.category.category);
 	return {
-		cartState: state.cart,
+		categorySelect: state.category.category,
 	};
 };
 
-export default connect(mapStateToProps)(CartMenu);
+const mapDispatchToProps = (dispatch) => ({
+	changeCategory: (name) =>
+		dispatch({ type: 'CATEGORY_CHOICE', payload: name }),
+	// changeProduct: (name) => dispatch({ type: 'CATEGORY_CHOICE', payload: name }),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Headermenu);
