@@ -13,7 +13,7 @@ let initialState = {
 		},
 		{ displayName: 'Wine', normalizedName: 'wine', description: 'all wines' },
 	],
-	onLoad: 'All',
+	onLoad: null,
 };
 
 function categoryReducer(state = initialState, action) {
@@ -22,10 +22,10 @@ function categoryReducer(state = initialState, action) {
 		case 'CATEGORY_CHOICE':
 			let selectedCat = initialState.category.filter((category) => {
 				if (category.displayName === payload) {
-					return { onLoad: payload };
+					return { ...state, onLoad: payload };
 				}
 			});
-			return { ...state, onLoad: selectedCat.onLoad };
+			return { ...state, onLoad: selectedCat };
 		default:
 			return initialState;
 	}

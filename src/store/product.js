@@ -38,16 +38,30 @@ function productReducer(state = initialState, action) {
 	let { type, payload } = action;
 	switch (type) {
 		case 'CATEGORY_CHOICE':
+			console.log(payload);
 			if (payload === 'All') {
 				return initialState;
 			} else {
-				const filter = initialState.products.filter((product) => {
+				const filter = state.products.map((product) => {
 					if (product.category === payload) {
-						return { products: product };
+						return { ...state, products: product };
 					}
 				});
-				return { products: filter };
+				return { ...state, products: filter };
 			}
+		case 'ADD_TO_CART':
+			let incriment = state.products.map((product) => {
+				if (product.productName === payload.productName) {
+					if (product.quantity > 0) {
+						product.cartQuantity += 1;
+						product.quantity--;
+					} else {
+						alert('Item out of stock');
+					}
+				}
+				return product;
+			});
+			return { ...state, products: incriment };
 		case 'REMOVE_FROM_CART':
 			if (state.products.includes(payload)) {
 				state.products.filter((product) => {
@@ -57,19 +71,6 @@ function productReducer(state = initialState, action) {
 				});
 			}
 			break;
-		case 'ADD_TO_CART':
-			if (state.products.includes(payload)) {
-				let updatedState = initialState.products.map((product) => {
-					if (product.productName === payload.productName) {
-						console.log(product);
-						console.log('in the products ADD');
-						product.cartQuantity += 1;
-					}
-					return product;
-				});
-				return { ...state, updatedState };
-			}
-			return initialState;
 		default:
 			return state;
 	}

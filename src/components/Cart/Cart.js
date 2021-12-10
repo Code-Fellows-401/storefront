@@ -35,6 +35,7 @@ function CartMenu(props) {
 			>
 				<MenuItem
 					onClick={() => {
+						props.showCartHandler();
 						setAnchorEl(null);
 					}}
 				>
