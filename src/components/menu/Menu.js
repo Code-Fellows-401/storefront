@@ -41,6 +41,7 @@ function Headermenu(props) {
 						onClick={() => {
 							props.changeCategory(item.displayName);
 							setAnchorEl(null);
+							props.showCartHandler();
 						}}
 					>
 						{item.displayName}

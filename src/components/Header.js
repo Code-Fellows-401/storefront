@@ -20,12 +20,12 @@ function Header(props) {
 						aria-label='menu'
 						sx={{ mr: 2 }}
 					>
-						<Headermenu />
+						<Headermenu showCartHandler={props.showCartHandler}/>
 					</IconButton>
 					<Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
 						StoreFront
 					</Typography>
-					<CartMenu />
+					<CartMenu showCartHandler={props.showCartHandler} />
 				</Toolbar>
 			</AppBar>
 		</Box>
