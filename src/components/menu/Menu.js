@@ -2,23 +2,20 @@ import * as React from 'react';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import { useContext } from 'react';
-import { CategoryContext } from '../../store/category';
+import MenuIcon from '@mui/icons-material/Menu';
+import { connect } from 'react-redux';
 
 function Headermenu(props) {
-	const context = useContext(CategoryContext);
-	console.log(context.category);
 	const [anchorEl, setAnchorEl] = React.useState(null);
 	const open = Boolean(anchorEl);
 	const handleClick = (event) => {
 		setAnchorEl(event.currentTarget);
 	};
-	const handleClose = () => {
-		setAnchorEl(null);
-	};
+
 	return (
 		<div>
 			<Button
+				style={{ background: '#2E3B55' }}
 				id='basic-button'
 				aria-controls='basic-menu'
 				aria-haspopup='true'
@@ -26,23 +23,45 @@ function Headermenu(props) {
 				onClick={handleClick}
 				color='inherit'
 			>
-				Categories
+				<MenuIcon />
 			</Button>
+
 			<Menu
 				id='basic-menu'
 				anchorEl={anchorEl}
 				open={open}
-				onClose={handleClose}
 				MenuListProps={{
 					'aria-labelledby': 'basic-button',
 				}}
 			>
-				{context.category.map((item) => (
-					<MenuItem onClick={handleClose}>{item}</MenuItem>
+				{props.categorySelect.map((item, key) => (
+					<MenuItem
+						key={key}
+						name={item.displayName}
+						onClick={() => {
+							props.changeCategory(item.displayName);
+							setAnchorEl(null);
+						}}
+					>
+						{item.displayName}
+					</MenuItem>
 				))}
 			</Menu>
 		</div>
 	);
 }
 
-export default Headermenu;
+const mapStateToProps = (state) => {
+	console.log(state.category.category);
+	return {
+		categorySelect: state.category.category,
+	};
+};
+
+const mapDispatchToProps = (dispatch) => ({
+	changeCategory: (name) =>
+		dispatch({ type: 'CATEGORY_CHOICE', payload: name }),
+	// changeProduct: (name) => dispatch({ type: 'CATEGORY_CHOICE', payload: name }),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Headermenu);

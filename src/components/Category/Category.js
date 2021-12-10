@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Box } from '@mui/material';
 import Button from '@mui/material/Button';
+import { connect } from 'react-redux';
 
 function Category() {
 	return (
@@ -12,4 +13,13 @@ function Category() {
 	);
 }
 
-export default Category;
+const mapStateToProps = state => {votes: state.votes}
+
+
+
+const mapDispatchToProps = (dispatch) => ({
+	increment: (name) => dispatch({ type: 'ADD_VOTE', payload: name }),
+	reset: () => dispatch({ type: 'RESET_VOTES' }),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Category);
