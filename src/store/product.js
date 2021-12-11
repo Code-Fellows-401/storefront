@@ -39,16 +39,14 @@ function productReducer(state = initialState, action) {
 	switch (type) {
 		case 'CATEGORY_CHOICE':
 			console.log(payload);
-			if (payload === 'All') {
-				return initialState;
-			} else {
-				const filter = state.products.map((product) => {
-					if (product.category === payload) {
-						return { ...state, products: product };
-					}
-				});
+			if (payload !== 'All') {
+				const filter = initialState.products.filter(
+					(product) => product.category === payload
+				);
 				return { ...state, products: filter };
 			}
+			return initialState;
+
 		case 'ADD_TO_CART':
 			let incriment = state.products.map((product) => {
 				if (product.productName === payload.productName) {
@@ -62,6 +60,8 @@ function productReducer(state = initialState, action) {
 				return product;
 			});
 			return { ...state, products: incriment };
+
+		// ------------------------------------------ Doesnt Work
 		case 'REMOVE_FROM_CART':
 			if (state.products.includes(payload)) {
 				state.products.filter((product) => {

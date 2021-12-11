@@ -41,7 +41,7 @@ function Headermenu(props) {
 						onClick={() => {
 							props.changeCategory(item.displayName);
 							setAnchorEl(null);
-							props.showCartHandler();
+							props.hideCartHandler();
 						}}
 					>
 						{item.displayName}
@@ -53,7 +53,6 @@ function Headermenu(props) {
 }
 
 const mapStateToProps = (state) => {
-	console.log(state.category.category);
 	return {
 		categorySelect: state.category.category,
 	};
@@ -62,7 +61,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
 	changeCategory: (name) =>
 		dispatch({ type: 'CATEGORY_CHOICE', payload: name }),
-	// changeProduct: (name) => dispatch({ type: 'CATEGORY_CHOICE', payload: name }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Headermenu);
