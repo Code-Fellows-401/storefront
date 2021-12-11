@@ -5,7 +5,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
-import Headermenu from './menu/Menu';
+import Headermenu from './Menu/Menu';
 import CartMenu from './Cart/Cart';
 
 function Header(props) {
@@ -20,7 +20,7 @@ function Header(props) {
 						aria-label='menu'
 						sx={{ mr: 2 }}
 					>
-						<Headermenu showCartHandler={props.showCartHandler}/>
+						<Headermenu hideCartHandler={props.hideCartHandler} />
 					</IconButton>
 					<Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
 						StoreFront

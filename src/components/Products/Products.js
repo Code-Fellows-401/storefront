@@ -6,9 +6,9 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { connect } from 'react-redux';
+import Box from '@mui/material/Box';
 
 function Products(props) {
-	console.log(props.productSelect);
 	return (
 		<>
 			{props.productSelect.map((product) => {

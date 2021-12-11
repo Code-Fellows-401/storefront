@@ -54,7 +54,7 @@ function CartMenu(props) {
 }
 
 const mapStateToProps = (state) => {
-	console.log(state.cart);
+
 	return {
 		cartState: state.cart,
 	};

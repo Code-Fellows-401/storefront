@@ -1,8 +1,7 @@
 import React from 'react';
 import Main from './components/Main';
-import { Box } from '@mui/material';
 
-function App(props) {
+function App() {
 	return (
 		<>
 			<Main />

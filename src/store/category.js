@@ -20,14 +20,12 @@ function categoryReducer(state = initialState, action) {
 	let { type, payload } = action;
 	switch (type) {
 		case 'CATEGORY_CHOICE':
-			let selectedCat = initialState.category.filter((category) => {
-				if (category.displayName === payload) {
-					return { ...state, onLoad: payload };
-				}
-			});
-			return { ...state, onLoad: selectedCat };
+			let selectedCat = state.category.filter(
+				(category) => category.displayName === payload
+			)[0];
+			return { ...state, onLoad: selectedCat.displayName };
 		default:
-			return initialState;
+			return state;
 	}
 }
 
