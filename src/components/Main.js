@@ -51,7 +51,4 @@ const mapStateToProps = (state) => {
 	};
 };
 
-///TODO
-//// NEed to fixx the rendering of the Catefgory
-
 export default connect(mapStateToProps)(Main);

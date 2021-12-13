@@ -20,6 +20,7 @@ function categoryReducer(state = initialState, action) {
 	let { type, payload } = action;
 	switch (type) {
 		case 'CATEGORY_CHOICE':
+			console.log('cat choice firing');
 			let selectedCat = state.category.filter(
 				(category) => category.displayName === payload
 			)[0];

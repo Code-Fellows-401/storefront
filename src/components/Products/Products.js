@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { React, useEffect } from 'react';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -6,12 +6,25 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { connect } from 'react-redux';
-import Box from '@mui/material/Box';
+import { fetchProducts } from '../../store/product';
+import { addProduct } from '../../store/product';
+import AddIcon from '@mui/icons-material/Add';
 
-function Products(props) {
+function Products({
+	productSelect,
+	categoryFilter,
+	changeProduct,
+	getProducts,
+	postProducts,
+	addToCart,
+}) {
+	useEffect(() => {
+		getProducts();
+	}, []);
+
 	return (
 		<>
-			{props.productSelect.map((product) => {
+			{productSelect.map((product) => {
 				return (
 					<>
 						<Card sx={{ maxWidth: 345 }}>
@@ -39,12 +52,19 @@ function Products(props) {
 								<Button
 									size='small'
 									onClick={() => {
-										props.addToCart(product);
+										addToCart(product);
 									}}
 								>
 									Add to Cart
 								</Button>
-								<Button size='small'></Button>
+								<Button
+								// size='small'
+								// onclick={() => {
+								// 	props.postProducts(product);
+								// }}
+								>
+									<AddIcon />
+								</Button>
 							</CardActions>
 						</Card>
 					</>
@@ -64,5 +84,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
 	changeProduct: (name) => dispatch({ type: 'CATEGORY_CHOICE', payload: name }),
 	addToCart: (product) => dispatch({ type: 'ADD_TO_CART', payload: product }),
+	getProducts: () => dispatch(fetchProducts()),
+	postProducts: (product) => dispatch(addProduct(product)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Products);
