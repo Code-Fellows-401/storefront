@@ -2,6 +2,7 @@ import axios from 'axios';
 
 let initialState = {
 	products: [],
+	filtered: [],
 };
 
 export const fetchProducts = () => async (dispatch) => {
@@ -14,10 +15,22 @@ export const fetchProducts = () => async (dispatch) => {
 };
 
 export const addProduct = (product) => async (dispatch) => {
-	const response = await axios.post('http://localhost:3001/products', {
-		product,
-	});
+	if (product.quantity > 0) {
+		console.log('in the if');
+		++product.cartQuantity;
+		product.quantity--;
+	} else {
+		alert('Item out of stock');
+	}
+	console.log(product);
+	const response = await axios.put(
+		`http://localhost:3001/products/${product.id}`,
+		{
+			product,
+		}
+	);
 	const data = response.data;
+	console.log(data);
 	dispatch({
 		type: 'ADD_PRODUCT',
 		payload: data,
@@ -30,35 +43,40 @@ function productReducer(state = initialState, action) {
 	switch (type) {
 		// Fetches then Products from the DB on the useEffect() on pageload or state change. //
 		case 'FETCH_PRODUCTS':
-			return { ...state, products: payload };
+			return { products: payload, filtered: payload };
 		case 'ADD_PRODUCT':
-			break;
+			console.log('in postProducts');
+			let update = state.products.map((product) => {
+				if (product.productName === payload.productName) {
+					return (product = payload);
+				}
+			});
+			return { products: update };
 		// Filters the product based on the CAtegory Selected in the Menu //
 		case 'CATEGORY_CHOICE':
-			console.log('this is the state log', state);
-			console.log('this is the payload', payload);
 			if (payload !== 'All') {
 				const filter = state.products.filter((product) => {
 					if (product.category === payload) {
 						return product;
 					}
 				});
-				return { ...state.products, products: filter };
+				return { ...state, filtered: filter };
 			}
-			return state;
-		case 'ADD_TO_CART':
-			let incriment = state.products.map((product) => {
-				if (product.productName === payload.productName) {
-					if (product.quantity > 0) {
-						++product.cartQuantity;
-						product.quantity--;
-					} else {
-						alert('Item out of stock');
-					}
-				}
-				return product;
-			});
-			return { ...state, products: incriment };
+			return { ...state, filtered: state.products };
+
+		// case 'ADD_TO_CART':
+		// 	let incriment = state.products.map((product) => {
+		// 		if (product.productName === payload.productName) {
+		// 			if (product.quantity > 0) {
+		// 				++product.cartQuantity;
+		// 				product.quantity--;
+		// 			} else {
+		// 				alert('Item out of stock');
+		// 			}
+		// 		}
+		// 		return product;
+		// 	});
+		// 	return { ...state, products: incriment };
 
 		// ------------------------------------------ Doesnt Work
 		case 'REMOVE_FROM_CART':
