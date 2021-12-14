@@ -1,16 +1,21 @@
 import * as React from 'react';
+import { useEffect } from 'react';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { connect } from 'react-redux';
+import { fetchCart } from '../../store/cart';
 
-function CartMenu(props) {
+function CartMenu({ getCart, cartState, showCartHandler }) {
 	const [anchorEl, setAnchorEl] = React.useState(null);
 	const open = Boolean(anchorEl);
 	const handleClick = (event) => {
 		setAnchorEl(event.currentTarget);
 	};
 
+	useEffect(() => {
+		getCart();
+	}, []);
 	return (
 		<div>
 			<Button
@@ -22,7 +27,7 @@ function CartMenu(props) {
 				onClick={handleClick}
 				color='inherit'
 			>
-				Cart({props.cartState.itemCount})
+				Cart({cartState.itemCount})
 			</Button>
 
 			<Menu
@@ -35,7 +40,7 @@ function CartMenu(props) {
 			>
 				<MenuItem
 					onClick={() => {
-						props.showCartHandler();
+						showCartHandler();
 						setAnchorEl(null);
 					}}
 				>
@@ -54,10 +59,12 @@ function CartMenu(props) {
 }
 
 const mapStateToProps = (state) => {
-
 	return {
 		cartState: state.cart,
 	};
 };
+const mapDispatchToProps = (dispatch) => ({
+	getCart: () => dispatch(fetchCart()),
+});
 
-export default connect(mapStateToProps)(CartMenu);
+export default connect(mapStateToProps, mapDispatchToProps)(CartMenu);

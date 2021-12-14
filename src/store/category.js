@@ -1,26 +1,25 @@
+import axios from 'axios';
+
 let initialState = {
-	category: [
-		{ displayName: 'All', normalizedName: 'all', description: 'all products' },
-		{
-			displayName: 'VideoGame',
-			normalizedName: 'videogames',
-			description: 'all videogames',
-		},
-		{
-			displayName: 'Books',
-			normalizedName: 'books',
-			description: 'all books',
-		},
-		{ displayName: 'Wine', normalizedName: 'wine', description: 'all wines' },
-	],
+	category: [],
 	onLoad: null,
+};
+
+export const fetchCategories = () => async (dispatch) => {
+	const response = await axios.get('http://localhost:3001/categories');
+
+	dispatch({
+		type: 'FETCH_CATEGORIES',
+		payload: response.data.results,
+	});
 };
 
 function categoryReducer(state = initialState, action) {
 	let { type, payload } = action;
 	switch (type) {
+		case 'FETCH_CATEGORIES':
+			return { category: payload };
 		case 'CATEGORY_CHOICE':
-			console.log('cat choice firing');
 			let selectedCat = state.category.filter(
 				(category) => category.displayName === payload
 			)[0];

@@ -6,50 +6,53 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { connect } from 'react-redux';
+import { fetchCart } from '../../store/cart';
+import { useEffect } from 'react';
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import RemoveShoppingCartIcon from '@mui/icons-material/RemoveShoppingCart';
 
-function ViewCart(props) {
+function ViewCart({ getCart, cart, getProducts }) {
+	useEffect(() => {
+		getCart();
+	}, []);
+
 	return (
 		<>
-			{props.productSelect.map((product) => {
-				if (props.cart.includes(product.productName)) {
-					return (
-						<>
-							<Card sx={{ maxWidth: 345 }}>
-								<CardMedia
-									component='img'
-									height='140'
-									image={product.pictureURL}
-									alt='green iguana'
-								/>
-								<CardContent>
-									<Typography gutterBottom variant='h5' component='div'>
-										{product.productName}
-									</Typography>
-									<Typography variant='body2' color='text.secondary'>
-										{product.description}
-									</Typography>
-									<Typography variant='body2' color='text.secondary'>
-										Price: ${product.cost}
-									</Typography>
-									<Typography variant='body2' color='text.secondary'>
-										InCart: {product.cartQuantity}
-									</Typography>
-								</CardContent>
-								<CardActions>
-									<Button
-										size='small'
-										onClick={() => {
-											props.addToCart(product);
-										}}
-									>
-										Remove
-									</Button>
-									<Button size='small'></Button>
-								</CardActions>
-							</Card>
-						</>
-					);
-				}
+			{cart.map((cart) => {
+				return (
+					<>
+						<Card sx={{ maxWidth: 345 }}>
+							<CardMedia
+								component='img'
+								height='140'
+								image={cart.pictureURL}
+								alt='green iguana'
+							/>
+							<CardContent>
+								<Typography gutterBottom variant='h5' component='div'>
+									{cart.productName}
+								</Typography>
+								<Typography variant='body2' color='text.secondary'>
+									{cart.description}
+								</Typography>
+								<Typography variant='body2' color='text.secondary'>
+									Price: ${cart.cost}
+								</Typography>
+								<Typography variant='body2' color='text.secondary'>
+									InCart: {cart.cartQuantity}
+								</Typography>
+							</CardContent>
+							<CardActions>
+								<Button>
+									<AddShoppingCartIcon color='success' />
+								</Button>
+								<Button>
+									<RemoveShoppingCartIcon color='error' />
+								</Button>
+							</CardActions>
+						</Card>
+					</>
+				);
 			})}
 		</>
 	);
@@ -57,14 +60,11 @@ function ViewCart(props) {
 
 const mapStateToProps = (state) => {
 	return {
-		productSelect: state.product.products,
-		categoryFilter: state.category.onLoad,
 		cart: state.cart.cart,
 	};
 };
 
 const mapDispatchToProps = (dispatch) => ({
-	changeProduct: (name) => dispatch({ type: 'CATEGORY_CHOICE', payload: name }),
-	addToCart: (product) => dispatch({ type: 'ADD_TO_CART', payload: product }),
+	getCart: () => dispatch(fetchCart()),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(ViewCart);

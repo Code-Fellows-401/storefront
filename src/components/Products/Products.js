@@ -8,7 +8,9 @@ import Typography from '@mui/material/Typography';
 import { connect } from 'react-redux';
 import { fetchProducts } from '../../store/product';
 import { addProduct } from '../../store/product';
-import AddIcon from '@mui/icons-material/Add';
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import { fetchCategories } from '../../store/category';
+// import axios from 'axios';
 
 function Products({
 	productSelect,
@@ -17,14 +19,15 @@ function Products({
 	getProducts,
 	postProducts,
 	addToCart,
+	getCategories,
 }) {
 	useEffect(() => {
 		getProducts();
+		getCategories();
 	}, []);
-
 	return (
 		<>
-			{productSelect.map((product) => {
+			{productSelect.filtered.map((product) => {
 				return (
 					<>
 						<Card sx={{ maxWidth: 345 }}>
@@ -52,18 +55,10 @@ function Products({
 								<Button
 									size='small'
 									onClick={() => {
-										addToCart(product);
+										postProducts(product);
 									}}
 								>
-									Add to Cart
-								</Button>
-								<Button
-								// size='small'
-								// onclick={() => {
-								// 	props.postProducts(product);
-								// }}
-								>
-									<AddIcon />
+									<AddShoppingCartIcon color='success' />
 								</Button>
 							</CardActions>
 						</Card>
@@ -76,7 +71,7 @@ function Products({
 
 const mapStateToProps = (state) => {
 	return {
-		productSelect: state.product.products,
+		productSelect: state.product,
 		categoryFilter: state.category.onLoad,
 	};
 };
@@ -86,5 +81,6 @@ const mapDispatchToProps = (dispatch) => ({
 	addToCart: (product) => dispatch({ type: 'ADD_TO_CART', payload: product }),
 	getProducts: () => dispatch(fetchProducts()),
 	postProducts: (product) => dispatch(addProduct(product)),
+	getCategories: () => dispatch(fetchCategories()),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Products);
